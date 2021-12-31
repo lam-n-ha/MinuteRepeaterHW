@@ -1,8 +1,9 @@
 # MinuteRepeaterHW
-A minute repeater that chime the time of day implemented in Python on a Raspberry Pi 4 and 2 servo motors
+A minute repeater world clock that chime the time of day implemented in Python on a Raspberry Pi 4 and 2 servo motors
 
 A minute repeater is a complication in horology. More information about it can be found here: https://en.wikipedia.org/wiki/Minute_repeater
 
+The minute repeater asks users to enter either an IATA alpha-3 airport code, the name of a city and look up a dictionary created from data by OpenFlights.org to find the time zone and time at the specified airport or city  
 The minute repeater chimes the time in this pattern:
 X number of low pitch chime, with X = the hours of the day in the 12-hour clock system (X = hours of the day % 12)
 Y number of high pitch chime quickly followed by a low pitch chime, with Y = the number of 15 minutes intervals by the time the minute repeater is ran (Y = minutes of the day / 15)
