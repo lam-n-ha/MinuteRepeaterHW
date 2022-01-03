@@ -1,17 +1,27 @@
 from datetime import datetime
 import pytz
 import csv
+from gtts import gTTS
+import os
 
 airport_tz = {}
 city_tz = {}
 
-with open('airport_tz.csv', mode='r') as inp:
+with open('timezone_data.csv', mode='r') as inp:
     reader = csv.reader(inp)
     airport_tz = {rows[4]:rows[11] for rows in reader}
-with open('airport_tz.csv', mode='r') as inp:
+with open('timezone_data.csv', mode='r') as inp:
     reader = csv.reader(inp)
     city_tz = {rows[2]:rows[11] for rows in reader}
-    
+
+def tts(mytext):
+    language = 'en'
+    myobj = gTTS(text = mytext, lang = language, slow = False)
+    myobj.save("info.mp3")
+    os.system("mpg321 info.mp3")
+def parse(code) -> str:
+    return " ".join(code)
+
 class Time:
     def __init__(self, code):
         self.time = None
@@ -24,6 +34,8 @@ class Time:
                     self.timezone = pytz.timezone(airport_tz[code])
                     self.time = datetime.now(self.timezone)
                     print("The time at", code, "airport is", self.time.strftime("%H:%M"))
+                    s = 'The time at ' + parse(code) + ' airport is ' + self.time.strftime("%H:%M")
+                    tts(s)
                 else: print("The time at", code, "airport is unavailable")
             else:
                 print("No such airport found")
@@ -31,8 +43,11 @@ class Time:
             if city_tz[code] != "\\N":
                 self.timezone = pytz.timezone(city_tz[code])
                 self.time = datetime.now(self.timezone)
-                print("The time at", code, "City is", self.time.strftime("%H:%M"))
-            else: print("The time at", code, "City is unavailable")
+                print("The time in", code, "is", self.time.strftime("%H:%M"))
+                s = 'The time in ' + code + ' is ' + self.time.strftime("%H:%M")
+                tts(s)
+            else: print("The time in", code, "City is unavailable")
         else:
-            print("No such city or airport found")          
-#t = Time("")
+            print("No such city or airport found")
+            
+#t = Time("CVGhh")
